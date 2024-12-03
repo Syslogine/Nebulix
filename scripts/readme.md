@@ -10,6 +10,8 @@ Welcome to the **NebulixOS Scripts** repository. This collection of scripts is d
    Modify system identification files to brand your OS as NebulixOS.
 2. [**`package_installer.sh`**](#2-packageinstallersh)  
    Automate the installation of packages and dependencies on NebulixOS.
+3. [**`system_update.sh`**](#3-systemupdatesh)  
+   Automate system updates and optionally clean up unused packages.
 
 ---
 
@@ -107,12 +109,87 @@ The `package_installer.sh` script automates the installation of packages and dep
 
 ---
 
+## 3. `system_update.sh`
+
+### Description
+The `system_update.sh` script automates system updates and optionally cleans up unused packages. It supports multiple package managers, including **APT**, **DNF**, **YUM**, **Pacman**, and **Zypper**, making it compatible with a wide range of Linux distributions.
+
+### Features
+- Detects the package manager dynamically.
+- Performs a full system update:
+  - Updates the package list.
+  - Upgrades installed packages.
+  - Handles distribution upgrades (if applicable).
+- Optional cleanup of unused packages.
+- Supports Debian/Ubuntu, Fedora, CentOS, Arch Linux, and openSUSE.
+- Logs actions with timestamps for better visibility.
+
+---
+
+### Usage
+1. **Make the script executable**:
+   ```bash
+   chmod +x system_update.sh
+   ```
+2. **Run a standard update**:
+   ```bash
+   sudo ./system_update.sh
+   ```
+3. **Run an update with cleanup**:
+   ```bash
+   sudo ./system_update.sh --cleanup
+   ```
+4. **Show help**:
+   ```bash
+   sudo ./system_update.sh --help
+   ```
+
+---
+
+### Example Output
+#### Standard Update
+```
+[2024-12-02 16:00:00] [INFO] Detected distribution: NebulixOS 1.0
+[2024-12-02 16:00:00] [INFO] Using package manager: apt
+[2024-12-02 16:00:00] [INFO] Updating package list...
+[2024-12-02 16:00:05] [INFO] Upgrading packages...
+[2024-12-02 16:00:30] [INFO] Performing distribution upgrade...
+[2024-12-02 16:00:40] [SUCCESS] System update completed.
+[2024-12-02 16:00:40] [SUCCESS] Update process completed successfully.
+```
+
+#### With Cleanup
+```
+[2024-12-02 16:10:00] [INFO] Detected distribution: NebulixOS 1.0
+[2024-12-02 16:10:00] [INFO] Using package manager: apt
+[2024-12-02 16:10:00] [INFO] Updating package list...
+[2024-12-02 16:10:05] [INFO] Upgrading packages...
+[2024-12-02 16:10:30] [INFO] Performing distribution upgrade...
+[2024-12-02 16:10:40] [INFO] Removing unused packages...
+[2024-12-02 16:10:50] [SUCCESS] System cleanup completed.
+[2024-12-02 16:10:50] [SUCCESS] Update process completed successfully.
+```
+
+---
+
+### Supported Package Managers
+| Package Manager | Distribution Examples         |
+|------------------|-------------------------------|
+| `apt`            | Debian, Ubuntu, NebulixOS    |
+| `dnf`            | Fedora                       |
+| `yum`            | CentOS 7                     |
+| `pacman`         | Arch Linux                   |
+| `zypper`         | openSUSE                     |
+
+---
+
 ## Directory Structure
 Here’s an overview of the project folder:
 ```
 .
 ├── configure_nebulixos.sh      # Script to configure NebulixOS system identity
 ├── package_installer.sh        # Script to install packages and dependencies
+├── system_update.sh            # Script to update the system and optionally clean up unused packages
 ├── README.md                   # Documentation for scripts
 ```
 
@@ -125,6 +202,7 @@ We plan to add more scripts to automate other tasks, including:
 - **Service Configuration**: Pre-configure essential services like SSH or Nginx.
 
 ---
+
 
 ## Contributing
 Feel free to contribute to this repository by submitting new scripts or improving existing ones. Follow the format in this README for consistency.
