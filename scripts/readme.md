@@ -56,9 +56,10 @@ The `configure_nebulixos.sh` script customizes your operating system’s identif
 The `package_installer.sh` script automates the installation of packages and dependencies on NebulixOS. It detects the underlying OS and installs software accordingly, ensuring compatibility with Debian-based systems.
 
 ### Features
+- Detects and supports **NebulixOS**, **Debian**, and **Ubuntu**.
 - Installs essential software like `filezilla`, `vim`, `curl`, or any specified package.
 - Logs actions and errors with timestamps.
-- Automatically resolves dependencies.
+- Supports additional flags like `--dry-run` to preview installations.
 
 ### Usage
 1. Make the script executable:
@@ -75,7 +76,18 @@ The `package_installer.sh` script automates the installation of packages and dep
    sudo ./package_installer.sh filezilla vim curl
    ```
 
+3. Preview the installation using the `--dry-run` flag:
+   ```bash
+   sudo ./package_installer.sh --dry-run vim curl
+   ```
+
+4. Display usage help:
+   ```bash
+   sudo ./package_installer.sh --help
+   ```
+
 ### Example Output
+#### Successful Installation:
 ```
 [2024-12-02 14:20:00] [INFO] Starting package installation...
 [2024-12-02 14:20:00] [INFO] Installing package: filezilla
@@ -85,6 +97,12 @@ The `package_installer.sh` script automates the installation of packages and dep
 [2024-12-02 14:20:07] [INFO] Installing package: curl
 [2024-12-02 14:20:10] [SUCCESS] Successfully installed: curl
 [2024-12-02 14:20:10] [SUCCESS] All packages installed successfully!
+```
+
+#### Dry-Run Example:
+```
+[2024-12-02 14:25:00] [INFO] Dry-run mode enabled. No changes will be made.
+[2024-12-02 14:25:00] [INFO] Packages to install: vim curl
 ```
 
 ---
