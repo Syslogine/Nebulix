@@ -1,26 +1,7 @@
 #!/bin/bash
 
-# Strict mode for safer scripting
-set -euo pipefail
-
-# Enhanced logging with timestamp
-log() {
-    local type="$1"
-    local message="$2"
-    local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    case "$type" in
-        info)    echo -e "[$timestamp] \033[1;34m[INFO]\033[0m $message" ;;
-        success) echo -e "[$timestamp] \033[1;32m[SUCCESS]\033[0m $message" ;;
-        error)   echo -e "[$timestamp] \033[1;31m[ERROR]\033[0m $message" ;;
-        warning) echo -e "[$timestamp] \033[1;33m[WARNING]\033[0m $message" ;;
-    esac
-}
-
-# Check for root permissions
-if [[ $EUID -ne 0 ]]; then
-    log error "This script must be run as root. Use sudo."
-    exit 1
-fi
+# Source the utility script
+source "$(dirname "$0")/../utils/utils.sh"
 
 # Backup existing files before modification
 backup_file() {
@@ -86,6 +67,10 @@ EOF
 }
 
 # Execute main function
-configure_os_identity
+main() {
+    validate_root
+    configure_os_identity
+    log success "System identification configuration completed successfully!"
+}
 
-log success "System identification configuration completed successfully!"
+main "$@"
