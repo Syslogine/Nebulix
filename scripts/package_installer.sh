@@ -1,30 +1,7 @@
 #!/bin/bash
 
-# Strict mode for safer scripting
-set -euo pipefail
-
-# Logging function with color and timestamp
-log() {
-    local type="$1"
-    local message="$2"
-    local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    local color
-    case "$type" in
-        info)    color="\033[1;34m" ;;
-        success) color="\033[1;32m" ;;
-        error)   color="\033[1;31m" ;;
-        warning) color="\033[1;33m" ;;
-    esac
-    echo -e "[$timestamp] ${color}[${type^^}]\033[0m $message"
-}
-
-# Validate root permissions
-validate_root() {
-    if [[ $EUID -ne 0 ]]; then
-        log error "This script requires root privileges. Use sudo."
-        exit 1
-    fi
-}
+# Source the utility script
+source "$(dirname "$0")/../utils/utils.sh"
 
 # Detect operating system
 detect_os() {
@@ -104,7 +81,8 @@ main() {
         exit 1
     fi
 
-    local os_id=$(detect_os)
+    local os_id
+    os_id=$(detect_os)
     log info "Detected OS: $os_id"
 
     if [[ "$dry_run" == true ]]; then
