@@ -89,24 +89,3 @@ If you have ideas for new tutorials or improvements to existing ones, feel free 
 ## License
 
 This collection of tutorials is provided under the [MIT License](./LICENSE).
-
----
-
-### Folder Structure:
-```plaintext
-yubikey/
-├── README.md
-├── mfa-boot-debian-yubikey.md
-├── add-backup-yubikey-luks.md
-├── yubikey-ssh-authentication.md
-├── yubikey-pgp-smartcard.md
-├── yubikey-luks-detached-header.md
-├── yubikey-two-factor-auth.md
-├── yubikey-webauthn-fido2.md
-├── yubikey-gpg-email-encryption.md
-├── yubikey-pam-authentication.md
-├── yubikey-static-password.md
-├── yubikey-vpn-authentication.md
-├── yubikey-password-manager.md
-└── LICENSE
-```
