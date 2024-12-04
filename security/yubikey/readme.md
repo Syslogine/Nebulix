@@ -89,7 +89,8 @@ If you have ideas for new tutorials or improvements to existing ones, feel free 
 ## License
 
 This collection of tutorials is provided under the [MIT License](./LICENSE).
-```
+
+---
 
 ### Folder Structure:
 ```plaintext
