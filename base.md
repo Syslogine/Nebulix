@@ -227,24 +227,99 @@ For a **250 GB SSD**, follow this layout to maximize efficiency and ensure secur
 ---
 
 ### Step 3.6: Secure Bootloader Configuration
-1. Install GRUB on the primary disk.
-2. For UEFI systems:
-   - Ensure GRUB is installed on the EFI System Partition (ESP).
-3. Add GRUB password protection:
-   ```bash
-   grub-mkpasswd-pbkdf2
-   ```
-   Add the hash to `/etc/grub.d/40_custom`:
-   ```plaintext
-   set superusers="root"
-   password_pbkdf2 root <hash>
-   ```
-   Update GRUB:
-   ```bash
-   sudo update-grub
-   ```
+
+The GRUB bootloader is crucial for system boot security. While GRUB is installed during the Debian setup process, additional steps to enhance its security should be completed **after the system is installed and restarted**.
 
 ---
+
+#### During Installation:
+1. **Install GRUB**:
+   - When prompted during installation, confirm the installation of GRUB on the primary disk.
+   - For UEFI systems:
+     - Ensure GRUB is installed on the **EFI System Partition (ESP)**.
+   - For Legacy systems:
+     - Install GRUB on the **Master Boot Record (MBR)**.
+
+---
+
+#### After Installation and Restart:
+1. **Log in to Your System**:
+   - Use the non-root user account created during the installation.
+
+2. **Add GRUB Password Protection**:
+   - Open a terminal and create a hashed password for GRUB:
+     ```bash
+     grub-mkpasswd-pbkdf2
+     ```
+   - Copy the generated hash.
+
+3. **Modify GRUB Configuration**:
+   - Edit the custom GRUB configuration file:
+     ```bash
+     sudo nano /etc/grub.d/40_custom
+     ```
+   - Add the following lines, replacing `<hash>` with the password hash:
+     ```plaintext
+     set superusers="root"
+     password_pbkdf2 root <hash>
+     ```
+   - Save and exit the editor.
+
+4. **Update GRUB**:
+   - Apply the changes:
+     ```bash
+     sudo update-grub
+     ```
+
+5. **Test the Configuration**:
+   - Reboot your system to verify that GRUB now prompts for a password when entering the boot menu.
+
+---
+
+#### Optional Enhancements:
+1. **Restrict Boot Options**:
+   - Prevent unauthorized users from editing boot parameters or booting into single-user mode:
+     - Edit `/etc/default/grub`:
+       ```bash
+       sudo nano /etc/default/grub
+       ```
+       Modify the following line:
+       ```plaintext
+       GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+       ```
+       Add:
+       ```plaintext
+       GRUB_DISABLE_RECOVERY="true"
+       ```
+     - Update GRUB to apply changes:
+       ```bash
+       sudo update-grub
+       ```
+
+2. **Set a Timeout for GRUB**:
+   - Reduce the GRUB menu timeout to speed up booting:
+     ```bash
+     sudo nano /etc/default/grub
+     ```
+     Adjust:
+     ```plaintext
+     GRUB_TIMEOUT=5
+     ```
+     - `5` represents a 5-second timeout. Set it to a lower value if preferred.
+
+3. **Enable Boot Logging**:
+   - For debugging boot issues, enable detailed boot logs:
+     ```bash
+     sudo nano /etc/default/grub
+     ```
+     Add:
+     ```plaintext
+     GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3"
+     ```
+     - `loglevel=3` reduces unnecessary logs while keeping critical messages.
+
+---
+
 
 ### Additional Secure Installation Tips
 1. Install firmware updates before continuing:
