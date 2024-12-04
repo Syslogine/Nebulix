@@ -322,19 +322,131 @@ The GRUB bootloader is crucial for system boot security. While GRUB is installed
 
 
 ### Additional Secure Installation Tips
-1. Install firmware updates before continuing:
-   ```bash
-   sudo apt install firmware-linux
-   ```
-2. Configure AppArmor:
+
+After completing the initial setup and restarting your system, enhance security by applying these additional measures.
+
+---
+
+#### 1. Install Firmware Updates
+Ensure your hardware is up-to-date with the latest firmware to avoid compatibility and security issues:
+```bash
+sudo apt update
+sudo apt install firmware-linux
+```
+
+---
+
+#### 2. Configure AppArmor for Application Security
+AppArmor provides mandatory access control to restrict application behavior:
+1. Install AppArmor and essential profiles:
    ```bash
    sudo apt install apparmor apparmor-profiles
    ```
-3. Secure logs:
-   - Modify `/etc/rsyslog.conf` to restrict access:
-     ```plaintext
-     $FileCreateMode 0640
+2. Enable AppArmor at boot:
+   - Edit GRUB configuration:
+     ```bash
+     sudo nano /etc/default/grub
      ```
+     Add `apparmor=1 security=apparmor` to the kernel parameters:
+     ```plaintext
+     GRUB_CMDLINE_LINUX_DEFAULT="quiet splash apparmor=1 security=apparmor"
+     ```
+   - Update GRUB:
+     ```bash
+     sudo update-grub
+     ```
+   - Reboot your system:
+     ```bash
+     sudo reboot
+     ```
+3. Check AppArmor status:
+   ```bash
+   sudo apparmor_status
+   ```
+4. Enforce profiles for additional applications:
+   ```bash
+   sudo aa-enforce /etc/apparmor.d/*
+   ```
+
+---
+
+#### 3. Secure System Logs
+Logs contain sensitive information and should be protected:
+1. Modify `/etc/rsyslog.conf` to restrict access:
+   ```bash
+   sudo nano /etc/rsyslog.conf
+   ```
+   Add or edit:
+   ```plaintext
+   $FileCreateMode 0640
+   ```
+2. Restart the syslog service:
+   ```bash
+   sudo systemctl restart rsyslog
+   ```
+
+---
+
+#### 4. Configure Automatic Updates (Optional)
+Keep your system patched automatically:
+1. Install `unattended-upgrades`:
+   ```bash
+   sudo apt install unattended-upgrades
+   ```
+2. Enable automatic updates:
+   ```bash
+   sudo dpkg-reconfigure unattended-upgrades
+   ```
+
+---
+
+#### 5. Harden the File System
+Restrict access to critical file systems to minimize exploitation risks:
+1. Edit `/etc/fstab`:
+   ```bash
+   sudo nano /etc/fstab
+   ```
+2. Add the following options to sensitive partitions:
+   ```plaintext
+   /tmp    ext4    defaults,nodev,nosuid,noexec 0 2
+   /var    ext4    defaults,nodev               0 2
+   /home   ext4    defaults,nodev,nosuid       0 2
+   ```
+3. Apply changes:
+   ```bash
+   sudo mount -a
+   ```
+
+---
+
+#### 6. Enable Auditd for Monitoring
+Monitor system activity for anomalies:
+1. Install the audit daemon:
+   ```bash
+   sudo apt install auditd
+   ```
+2. Start and enable the service:
+   ```bash
+   sudo systemctl start auditd
+   sudo systemctl enable auditd
+   ```
+3. View audit logs:
+   ```bash
+   sudo ausearch -m avc -ts recent
+   ```
+
+---
+
+#### 7. Limit User Privileges
+Restrict non-root users to the least privilege necessary:
+1. Review the sudoers file:
+   ```bash
+   sudo visudo
+   ```
+2. Add specific commands users are allowed to execute:
+   ```plaintext
+   username ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart service_name
+   ```
 
 ---
 
