@@ -167,25 +167,86 @@ For a variety of disk sizes (e.g., 500 GB, 1 TB, etc.), the following layout off
 
 ---
 
-#### **Partition Layout for a 250 GB M.2 SSD**
+### Partition Layout Recommendations for a 250 GB SSD
 
-For a **250 GB SSD**, follow this layout to maximize efficiency and ensure security:
+Proper partitioning is essential for optimizing performance, security, and compatibility. Below are tailored partition layouts for systems using **UEFI (ESP)** and **Legacy BIOS (MBR)**.
+
+---
+
+#### **Partition Layout for a 250 GB SSD with UEFI (ESP)**
+
+For systems using **UEFI**, the following layout balances efficiency and security:
+
+| Partition          | Size         | Purpose                                         | Notes                           |
+|---------------------|--------------|-------------------------------------------------|---------------------------------|
+| `/boot`            | **1 GB**     | Bootloader files (non-encrypted).               | Required for GRUB to boot.      |
+| `/`                | **30 GB**    | Root filesystem for the operating system.       | Houses system files and binaries. |
+| `/home`            | **100 GB**   | Encrypted partition for user data.              | Protects personal files and configurations. |
+| `/var`             | **10 GB**    | Encrypted partition for logs and variable files.| Isolates logs to prevent overflow. |
+| `/tmp`             | **5 GB**     | Encrypted partition for temporary files.        | Limits access to temporary files. |
+| Swap               | Equal to RAM | Virtual memory (encrypted).                     | Supports hibernation if needed. |
+| EFI Partition (ESP)| **500 MB**   | Required for UEFI systems (FAT32).              | Stores EFI bootloader.          |
+
+**Key Features**:
+- **UEFI Requirement**: The EFI System Partition (ESP) is mandatory for UEFI firmware.
+- **Encrypted Partitions**: `/home`, `/var`, and `/tmp` are encrypted with **LUKS**, protecting sensitive data in case of theft or physical compromise.
+- **Scalability**: `/home` is allocated the majority of the space for personal data and growth.
+
+---
+
+#### **Partition Layout for a 250 GB SSD with Legacy BIOS (MBR)**
+
+For older systems using **Legacy BIOS**, which do not support an ESP, use this layout:
 
 | Partition          | Size         | Purpose                                         | Notes                           |
 |---------------------|--------------|-------------------------------------------------|---------------------------------|
 | `/boot`            | **1 GB**     | Bootloader files (non-encrypted).               | Stores GRUB bootloader.         |
 | `/`                | **30 GB**    | Root filesystem for the operating system.       | Houses system files and binaries. |
-| `/home`            | **100 GB**   | Encrypted partition for user data.              | Documents, configurations, etc. |
-| `/var`             | **10 GB**    | Encrypted partition for logs and variable files.| Keeps logs isolated and secure. |
+| `/home`            | **100 GB**   | Encrypted partition for user data.              | Protects personal files and configurations. |
+| `/var`             | **10 GB**    | Encrypted partition for logs and variable files.| Isolates logs to prevent overflow. |
 | `/tmp`             | **5 GB**     | Encrypted partition for temporary files.        | Limits access to temporary files. |
 | Swap               | Equal to RAM | Virtual memory (encrypted).                     | Supports hibernation if needed. |
-| EFI Partition (ESP)| **500 MB**   | Required for UEFI systems (FAT32).              | Stores EFI bootloader.          |
 
-**Notes**:
-- This setup ensures that even with limited space, your system remains secure and optimized.
-- Encryption protects sensitive data, especially on `/home`, `/var`, and `/tmp`.
+**Key Features**:
+- **MBR-Based Bootloader**: GRUB is installed directly on the **Master Boot Record (MBR)**, as required by Legacy BIOS.
+- **No ESP**: Unlike UEFI systems, Legacy BIOS does not need an EFI System Partition.
 
 ---
+
+### General Partitioning Instructions
+
+1. **During Installation**:
+   - Select **Manual Partitioning** to create and assign partitions.
+   - For encrypted partitions:
+     - Choose "Use as: Physical volume for encryption."
+     - Assign a passphrase for encryption.
+     - After encryption, assign a filesystem (e.g., **ext4**) and mount point.
+
+2. **Enable Encryption**:
+   - Use **LUKS (Linux Unified Key Setup)** for `/home`, `/var`, and `/tmp`.
+   - Avoid encrypting `/boot`, as GRUB cannot access encrypted bootloader files.
+
+3. **File System Recommendations**:
+   - Use **ext4** for general partitions (e.g., `/` and `/home`).
+   - Consider **xfs** for `/var` for better log management.
+
+4. **Swap Configuration**:
+   - If hibernation is required, ensure the swap partition size is equal to or larger than your RAM.
+
+---
+
+### Comparison Between UEFI and Legacy BIOS
+
+| Feature            | UEFI (ESP)                           | Legacy BIOS (MBR)                     |
+|---------------------|--------------------------------------|---------------------------------------|
+| Bootloader Location | Installed in **EFI System Partition**| Installed in the **Master Boot Record**. |
+| Partitioning Style  | **GPT (GUID Partition Table)**       | **MBR (Master Boot Record)**          |
+| Disk Capacity Limit | Supports disks larger than **2 TB**  | Limited to **2 TB**.                  |
+| `/boot` Partition   | Required for GRUB.                  | Required for GRUB.                    |
+| EFI Partition (ESP) | Mandatory (**500 MB FAT32**).        | Not applicable.                       |
+
+---
+
 
 ### Shared Instructions for All Layouts
 
