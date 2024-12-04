@@ -143,11 +143,33 @@ Debian provides official ISO images on its website.
 ---
 
 ### Step 3.3: Partitioning Your Disk
-Partitioning your disk properly ensures performance and security. For a **250 GB M.2 SSD**, follow these guidelines:
 
-1. **Partitioning Mode**: Choose **Manual**.
-2. **Partition Layout**:
-   - Below is a recommended partitioning layout:
+Partitioning your disk is crucial for ensuring performance, security, and flexibility. Below are two configurations: one for general use (recommended for most users) and one tailored for a **250 GB M.2 SSD**.
+
+---
+
+#### **General Recommended Partition Layout**
+For a variety of disk sizes (e.g., 500 GB, 1 TB, etc.), the following layout offers balanced performance and security:
+
+| Partition          | Size           | Purpose                                         | Notes                           |
+|---------------------|----------------|-------------------------------------------------|---------------------------------|
+| `/boot`            | **1 GB**       | Bootloader files (non-encrypted).               | Required for GRUB.              |
+| `/`                | **30–50 GB**   | Root filesystem for the operating system.       | Houses system files and binaries. |
+| `/home`            | 50% of the disk| Encrypted partition for user data.              | Documents, configurations, etc. |
+| `/var`             | **10–20 GB**   | Encrypted partition for logs and variable files.| Keeps logs isolated and secure. |
+| `/tmp`             | **5–10 GB**    | Encrypted partition for temporary files.        | Limits access to temporary files. |
+| Swap               | Equal to RAM   | Virtual memory (encrypted).                     | Supports hibernation if needed. |
+| EFI Partition (ESP)| **500 MB–1 GB**| Required for UEFI systems (FAT32).              | Stores EFI bootloader.          |
+
+**Notes**:
+- Adjust `/home` size depending on your disk capacity and usage.
+- For disks larger than 1 TB, consider allocating more space to `/var` if running servers or applications that generate large logs.
+
+---
+
+#### **Partition Layout for a 250 GB M.2 SSD**
+
+For a **250 GB SSD**, follow this layout to maximize efficiency and ensure security:
 
 | Partition          | Size         | Purpose                                         | Notes                           |
 |---------------------|--------------|-------------------------------------------------|---------------------------------|
@@ -156,17 +178,34 @@ Partitioning your disk properly ensures performance and security. For a **250 GB
 | `/home`            | **100 GB**   | Encrypted partition for user data.              | Documents, configurations, etc. |
 | `/var`             | **10 GB**    | Encrypted partition for logs and variable files.| Keeps logs isolated and secure. |
 | `/tmp`             | **5 GB**     | Encrypted partition for temporary files.        | Limits access to temporary files. |
-| **Swap**           | Equal to RAM | Virtual memory (encrypted).                     | Supports hibernation if needed. |
+| Swap               | Equal to RAM | Virtual memory (encrypted).                     | Supports hibernation if needed. |
 | EFI Partition (ESP)| **500 MB**   | Required for UEFI systems (FAT32).              | Stores EFI bootloader.          |
 
-3. **Enable Full-Disk Encryption**:
-   - Use **LUKS (Linux Unified Key Setup)** to encrypt partitions.
-   - Use a strong passphrase (e.g., 20+ characters with mixed types).
-4. **File System Selection**:
-   - Use **ext4** for most partitions.
-   - Consider **xfs** for `/var`.
+**Notes**:
+- This setup ensures that even with limited space, your system remains secure and optimized.
+- Encryption protects sensitive data, especially on `/home`, `/var`, and `/tmp`.
 
 ---
+
+### Shared Instructions for All Layouts
+
+1. **Partitioning Mode**:
+   - During installation, select **Manual Partitioning**.
+
+2. **Enable Full-Disk Encryption**:
+   - Use **LUKS (Linux Unified Key Setup)** for encrypting partitions.
+   - Choose a strong passphrase (e.g., 20+ characters with uppercase, lowercase, numbers, and symbols).
+
+3. **File System Selection**:
+   - Use **ext4** for most partitions.
+   - For `/var`, consider using **xfs** for better log management.
+
+4. **Final Review**:
+   - Ensure that all partitions are correctly assigned before proceeding.
+   - Verify that boot partitions are **not encrypted**, as GRUB cannot decrypt partitions.
+
+---
+
 
 ### Step 3.4: User Account Setup
 1. **Root Account**:
