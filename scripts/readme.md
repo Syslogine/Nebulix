@@ -4,7 +4,7 @@ Welcome to the **NebulixOS Scripts** repository. This collection of scripts is d
 
 ---
 
-## Scripts Overview
+## **Scripts Overview**
 
 1. [**`configure_nebulixos.sh`**](#1-configurenehulixossh)  
    Modify system identification files to brand your OS as NebulixOS.
@@ -12,6 +12,10 @@ Welcome to the **NebulixOS Scripts** repository. This collection of scripts is d
    Automate the installation of packages and dependencies on NebulixOS.
 3. [**`system_update.sh`**](#3-systemupdatesh)  
    Automate system updates and optionally clean up unused packages.
+4. [**`encrypt-files.sh`**](#4-encrypt-filessh)  
+   Encrypt all files in a specified directory using GPG.
+5. [**`auto-mount-luks-usb.sh`**](#5-auto-mount-luks-usbsh)  
+   Unlock and mount a LUKS-encrypted USB drive automatically.
 
 ---
 
@@ -183,31 +187,104 @@ The `system_update.sh` script automates system updates and optionally cleans up 
 
 ---
 
-## Directory Structure
+
+
+## **4. `encrypt-files.sh`**
+
+### Description
+The `encrypt-files.sh` script encrypts all files in a specified directory using **GPG**, ensuring secure storage or transmission.
+
+### Features
+- Encrypts all files in a given directory.
+- Uses the recipient's public key for encryption.
+- Appends `.gpg` to encrypted files for easy identification.
+
+### Usage
+1. Make the script executable:
+   ```bash
+   chmod +x encrypt-files.sh
+   ```
+
+2. Run the script:
+   ```bash
+   ./encrypt-files.sh /path/to/directory recipient_email@example.com
+   ```
+
+### Example Output
+```
+Encrypting file1.txt...
+Successfully encrypted file1.txt to file1.txt.gpg
+Encrypting file2.doc...
+Successfully encrypted file2.doc to file2.doc.gpg
+Encryption process completed for all files in /path/to/directory.
+```
+
+---
+
+## **5. `auto-mount-luks-usb.sh`**
+
+### Description
+The `auto-mount-luks-usb.sh` script unlocks and mounts a LUKS-encrypted USB drive automatically using a specified key file.
+
+### Features
+- Unlocks a LUKS-encrypted device.
+- Mounts the unlocked device to a specified mount point.
+- Provides unmounting and locking instructions for convenience.
+
+### Usage
+1. Make the script executable:
+   ```bash
+   chmod +x auto-mount-luks-usb.sh
+   ```
+
+2. Run the script:
+   ```bash
+   ./auto-mount-luks-usb.sh /dev/sdX1 /mnt/usb /path/to/keyfile
+   ```
+
+### Example Output
+```
+Unlocking LUKS device /dev/sdX1...
+Mounting /dev/mapper/luks_usb to /mnt/usb...
+Successfully mounted /dev/mapper/luks_usb to /mnt/usb.
+To unmount and lock the device, run the following commands:
+sudo umount /mnt/usb
+sudo cryptsetup luksClose luks_usb
+```
+
+---
+
+## **Directory Structure**
+
 Here’s an overview of the project folder:
+
 ```
 .
 ├── configure_nebulixos.sh      # Script to configure NebulixOS system identity
 ├── package_installer.sh        # Script to install packages and dependencies
 ├── system_update.sh            # Script to update the system and optionally clean up unused packages
+├── encrypt-files.sh            # Script to encrypt files in a directory
+├── auto-mount-luks-usb.sh      # Script to unlock and mount LUKS-encrypted USB drives
 ├── README.md                   # Documentation for scripts
 ```
 
 ---
 
-## Future Scripts
-We plan to add more scripts to automate other tasks, including:
-- **System Updates**: Automate OS and package updates.
-- **Backup Utilities**: Backup configurations and user data.
-- **Service Configuration**: Pre-configure essential services like SSH or Nginx.
+## **Future Scripts**
+
+We plan to expand this repository with additional scripts, such as:
+- **Backup Utilities**: Automate secure backups with encryption.
+- **Network Configuration**: Pre-configure VPNs and firewalls for secure networking.
+- **Service Optimization**: Automate service configuration for SSH, Nginx, etc.
 
 ---
 
+## **Contributing**
 
-## Contributing
-Feel free to contribute to this repository by submitting new scripts or improving existing ones. Follow the format in this README for consistency.
+Feel free to contribute by submitting new scripts or improving existing ones. Follow the format in this README for consistency.
 
 ---
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## **License**
+
+This project is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
