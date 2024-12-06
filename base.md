@@ -71,7 +71,6 @@
     - [Final Security Audits](#step-106-final-security-audits)
     - [Final Backup and Snapshot](#step-107-final-backup-and-snapshot)
 
----
 
 
 ## 1. Downloading Debian
@@ -91,8 +90,6 @@ Debian provides official ISO images on its website.
    sha256sum debian.iso
    ```
    Compare the result with the checksum on the download page.
-
----
 
 ## 2. Creating a Bootable USB Drive
 
@@ -114,7 +111,6 @@ Debian provides official ISO images on its website.
      Replace `/dev/sdX` with the USB drive location.
 3. Safely eject the USB.
 
----
 
 ## 3. Installing Debian Securely
 
@@ -123,14 +119,12 @@ Debian provides official ISO images on its website.
 2. Access the boot menu (commonly F12, Esc, Del, or F2 during boot).
 3. Select the USB drive as the boot device.
 
----
 
 ### Step 3.1: Language and Regional Settings
 - Choose your preferred language.
 - Select your location to set the timezone.
 - Configure your keyboard layout (default works for most users).
 
----
 
 ### Step 3.2: Network Configuration
 1. Connect to a secure network:
@@ -140,13 +134,11 @@ Debian provides official ISO images on its website.
    - Use a unique, descriptive name (e.g., `secure-debian`).
 3. Leave the domain name blank unless setting up a domain.
 
----
 
 ### Step 3.3: Partitioning Your Disk
 
 Partitioning your disk is crucial for ensuring performance, security, and flexibility. Below are two configurations: one for general use (recommended for most users) and one tailored for a **250 GB M.2 SSD**.
 
----
 
 #### **General Recommended Partition Layout**
 For a variety of disk sizes (e.g., 500 GB, 1 TB, etc.), the following layout offers balanced performance and security:
@@ -165,13 +157,11 @@ For a variety of disk sizes (e.g., 500 GB, 1 TB, etc.), the following layout off
 - Adjust `/home` size depending on your disk capacity and usage.
 - For disks larger than 1 TB, consider allocating more space to `/var` if running servers or applications that generate large logs.
 
----
 
 ### Partition Layout Recommendations for a 250 GB SSD
 
 Proper partitioning is essential for optimizing performance, security, and compatibility. Below are tailored partition layouts for systems using **UEFI (ESP)** and **Legacy BIOS (MBR)**.
 
----
 
 #### **Partition Layout for a 250 GB SSD with UEFI (ESP)**
 
@@ -192,7 +182,6 @@ For systems using **UEFI**, the following layout balances efficiency and securit
 - **Encrypted Partitions**: `/home`, `/var`, and `/tmp` are encrypted with **LUKS**, protecting sensitive data in case of theft or physical compromise.
 - **Scalability**: `/home` is allocated the majority of the space for personal data and growth.
 
----
 
 #### **Partition Layout for a 250 GB SSD with Legacy BIOS (MBR)**
 
@@ -211,7 +200,6 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
 - **MBR-Based Bootloader**: GRUB is installed directly on the **Master Boot Record (MBR)**, as required by Legacy BIOS.
 - **No ESP**: Unlike UEFI systems, Legacy BIOS does not need an EFI System Partition.
 
----
 
 ### General Partitioning Instructions
 
@@ -233,7 +221,6 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
 4. **Swap Configuration**:
    - If hibernation is required, ensure the swap partition size is equal to or larger than your RAM.
 
----
 
 ### Comparison Between UEFI and Legacy BIOS
 
@@ -245,7 +232,6 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
 | `/boot` Partition   | Required for GRUB.                  | Required for GRUB.                    |
 | EFI Partition (ESP) | Mandatory (**500 MB FAT32**).        | Not applicable.                       |
 
----
 
 
 ### Shared Instructions for All Layouts
@@ -265,7 +251,6 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
    - Ensure that all partitions are correctly assigned before proceeding.
    - Verify that boot partitions are **not encrypted**, as GRUB cannot decrypt partitions.
 
----
 
 
 ### Step 3.4: User Account Setup
@@ -276,7 +261,6 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
    - Create a regular user account with a strong password.
    - Use a unique username not tied to your real identity.
 
----
 
 ### Step 3.5: Package Selection
 1. **Minimal Installation**:
@@ -285,13 +269,11 @@ For older systems using **Legacy BIOS**, which do not support an ESP, use this l
 2. **Custom Kernel** (Optional):
    - Select a security-hardened kernel if available.
 
----
 
 ### Step 3.6: Secure Bootloader Configuration
 
 The GRUB bootloader is crucial for system boot security. While GRUB is installed during the Debian setup process, additional steps to enhance its security should be completed **after the system is installed and restarted**.
 
----
 
 #### During Installation:
 1. **Install GRUB**:
@@ -301,7 +283,6 @@ The GRUB bootloader is crucial for system boot security. While GRUB is installed
    - For Legacy systems:
      - Install GRUB on the **Master Boot Record (MBR)**.
 
----
 
 #### After Installation and Restart:
 1. **Log in to Your System**:
@@ -335,7 +316,6 @@ The GRUB bootloader is crucial for system boot security. While GRUB is installed
 5. **Test the Configuration**:
    - Reboot your system to verify that GRUB now prompts for a password when entering the boot menu.
 
----
 
 #### Optional Enhancements:
 1. **Restrict Boot Options**:
@@ -379,14 +359,12 @@ The GRUB bootloader is crucial for system boot security. While GRUB is installed
      ```
      - `loglevel=3` reduces unnecessary logs while keeping critical messages.
 
----
 
 
 ### Additional Secure Installation Tips
 
 After completing the initial setup and restarting your system, enhance security by applying these additional measures.
 
----
 
 #### 1. Install Firmware Updates
 Ensure your hardware is up-to-date with the latest firmware to avoid compatibility and security issues:
@@ -395,7 +373,6 @@ sudo apt update
 sudo apt install firmware-linux
 ```
 
----
 
 #### 2. Configure AppArmor for Application Security
 AppArmor provides mandatory access control to restrict application behavior:
@@ -429,7 +406,6 @@ AppArmor provides mandatory access control to restrict application behavior:
    sudo aa-enforce /etc/apparmor.d/*
    ```
 
----
 
 #### 3. Secure System Logs
 Logs contain sensitive information and should be protected:
@@ -446,7 +422,6 @@ Logs contain sensitive information and should be protected:
    sudo systemctl restart rsyslog
    ```
 
----
 
 #### 4. Configure Automatic Updates (Optional)
 Keep your system patched automatically:
@@ -459,7 +434,6 @@ Keep your system patched automatically:
    sudo dpkg-reconfigure unattended-upgrades
    ```
 
----
 
 #### 5. Harden the File System
 Restrict access to critical file systems to minimize exploitation risks:
@@ -478,7 +452,6 @@ Restrict access to critical file systems to minimize exploitation risks:
    sudo mount -a
    ```
 
----
 
 #### 6. Enable Auditd for Monitoring
 Monitor system activity for anomalies:
@@ -496,7 +469,6 @@ Monitor system activity for anomalies:
    sudo ausearch -m avc -ts recent
    ```
 
----
 
 #### 7. Limit User Privileges
 Restrict non-root users to the least privilege necessary:
@@ -509,13 +481,11 @@ Restrict non-root users to the least privilege necessary:
    username ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart service_name
    ```
 
----
 
 ### Step 4: Post-Installation Tips
 
 Post-installation is where you fine-tune your Debian setup for maximum performance and security. Here’s a detailed guide to what you should do after the installation is complete.
 
----
 
 ### Step 4.1: Update and Upgrade the System
 
@@ -539,7 +509,6 @@ Before anything else, ensure your system is fully up-to-date with the latest sec
    sudo apt autoclean
    ```
 
----
 
 ### Step 4.2: Configure the Firewall
 
@@ -562,7 +531,6 @@ Debian includes **ufw** (Uncomplicated Firewall) for easy management.
    sudo ufw status
    ```
 
----
 
 ### Step 4.3: Secure SSH (Optional)
 
@@ -590,7 +558,6 @@ If you need SSH access, harden its configuration.
    sudo systemctl restart ssh
    ```
 
----
 
 ### Step 4.4: Install Essential Security Tools
 
@@ -610,7 +577,6 @@ If you need SSH access, harden its configuration.
    sudo dpkg-reconfigure unattended-upgrades
    ```
 
----
 
 ### Step 4.5: Harden Kernel Parameters
 
@@ -633,7 +599,6 @@ Edit the `sysctl.conf` file to add kernel hardening measures:
    sudo sysctl -p
    ```
 
----
 
 ### Step 4.6: Install Additional Security Enhancements
 
@@ -654,7 +619,6 @@ Edit the `sysctl.conf` file to add kernel hardening measures:
    firejail <application>
    ```
 
----
 
 ### Step 4.7: Configure User Privileges
 
@@ -667,7 +631,6 @@ Edit the `sysctl.conf` file to add kernel hardening measures:
    sudo passwd -l root
    ```
 
----
 
 ### Step 4.8: Backup and Recovery
 
@@ -687,7 +650,6 @@ Set up a regular backup strategy to protect your data.
    sudo timeshift-gtk
    ```
 
----
 
 ### Step 4.9: Optimize System Performance
 
@@ -708,7 +670,6 @@ Set up a regular backup strategy to protect your data.
    sudo systemctl enable fstrim.timer
    ```
 
----
 
 ### Step 4.10: Monitor System Logs
 
@@ -724,13 +685,11 @@ Keep an eye on system logs for unusual activity.
    sudo logwatch --detail high --mailto <your-email> --range today
    ```
 
----
 
 ### Step 5: Advanced Configurations and Enhancements
 
 Now that your Debian system is secure and operational, we can dive deeper into advanced configurations to enhance usability, performance, and functionality.
 
----
 
 ### Step 5.1: Install and Configure a Desktop Environment (Optional)
 
@@ -760,7 +719,6 @@ If you did not install a desktop environment during the installation, you can ad
    sudo systemctl reboot
    ```
 
----
 
 ### Step 5.2: Install Useful Software and Tools
 
@@ -804,7 +762,6 @@ If you did not install a desktop environment during the installation, you can ad
   sudo apt install chromium
   ```
 
----
 
 ### Step 5.3: Configure Automatic Backups
 
@@ -829,7 +786,6 @@ If you did not install a desktop environment during the installation, you can ad
    0 2 * * * borg create --progress /path/to/backup-repo::"backup-{now}" /path/to/data
    ```
 
----
 
 ### Step 5.4: Enhance Terminal Experience
 
@@ -853,7 +809,6 @@ If you did not install a desktop environment during the installation, you can ad
   sudo apt install tmux
   ```
 
----
 
 ### Step 5.5: Set Up Advanced Network Security
 
@@ -873,7 +828,6 @@ If you did not install a desktop environment during the installation, you can ad
   sudo apt install dnscrypt-proxy
   ```
 
----
 
 ### Step 5.6: Set Up a Custom Kernel (Optional)
 
@@ -900,7 +854,6 @@ For advanced users, you can compile and install a custom kernel:
    sudo make install
    ```
 
----
 
 ### Step 5.7: Advanced System Monitoring
 
@@ -934,7 +887,6 @@ For advanced users, you can compile and install a custom kernel:
    ```
 4. Access Grafana at `http://localhost:3000`.
 
----
 
 ### Step 5.8: Configure Virtualization (Optional)
 
@@ -959,13 +911,11 @@ For advanced users, you can compile and install a custom kernel:
    virt-manager
    ```
 
----
 
 ### Step 6: Advanced Services and Custom Configurations
 
 At this stage, your Debian system is secure and functional. Now, let’s dive into configuring advanced services and custom environments tailored to your specific needs.
 
----
 
 ### Step 6.1: Web Server Setup
 
@@ -1009,7 +959,6 @@ If you plan to host websites or web applications, consider setting up a web serv
    sudo certbot renew --dry-run
    ```
 
----
 
 ### Step 6.2: Database Setup
 
@@ -1033,7 +982,6 @@ If you plan to host websites or web applications, consider setting up a web serv
    sudo -u postgres psql
    ```
 
----
 
 ### Step 6.3: Docker and Containers
 
@@ -1077,7 +1025,6 @@ Docker simplifies application deployment by using containers.
    docker-compose --version
    ```
 
----
 
 ### Step 6.4: Set Up a File Server
 
@@ -1110,7 +1057,6 @@ Use **Samba** for sharing files across a network.
    sudo chmod 0777 /path/to/shared/folder
    ```
 
----
 
 ### Step 6.5: Configure Virtual Private Networking (VPN)
 
@@ -1159,7 +1105,6 @@ Use **Samba** for sharing files across a network.
    sudo systemctl enable wg-quick@wg0
    ```
 
----
 
 ### Step 6.6: Mail Server Setup (Optional)
 
@@ -1180,7 +1125,6 @@ Use **Samba** for sharing files across a network.
    sudo systemctl restart postfix
    ```
 
----
 
 ### Step 6.7: System Resource Management
 
@@ -1198,13 +1142,11 @@ Use **Samba** for sharing files across a network.
    echo "500M" | sudo tee /sys/fs/cgroup/memory/mygroup/memory.limit_in_bytes
    ```
 
----
 
 ### Step 7: Enterprise-Level Configurations and Advanced Hardening
 
 Now that your Debian system is fully functional with essential services, we can elevate it to enterprise-grade standards by applying advanced hardening, automation, and specialized configurations for scalability and security.
 
----
 
 ### Step 7.1: Advanced Hardening with SELinux (Optional)
 
@@ -1230,7 +1172,6 @@ Now that your Debian system is fully functional with essential services, we can 
    sudo ausearch -m avc -ts recent
    ```
 
----
 
 ### Step 7.2: Centralized Logging with ELK Stack (Elasticsearch, Logstash, Kibana)
 
@@ -1282,7 +1223,6 @@ Now that your Debian system is fully functional with essential services, we can 
    ```
 3. Access Kibana at `http://<your-ip>:5601`.
 
----
 
 ### Step 7.3: Configuration Management with Ansible
 
@@ -1323,7 +1263,6 @@ Now that your Debian system is fully functional with essential services, we can 
    ansible-playbook -i ~/inventory apache-setup.yml
    ```
 
----
 
 ### Step 7.4: High Availability with Load Balancing
 
@@ -1348,7 +1287,6 @@ Now that your Debian system is fully functional with essential services, we can 
    sudo systemctl enable haproxy
    ```
 
----
 
 ### Step 7.5: Advanced Monitoring with Zabbix
 
@@ -1371,7 +1309,6 @@ Now that your Debian system is fully functional with essential services, we can 
    ```
 5. Access the Zabbix frontend at `http://<your-ip>/zabbix`.
 
----
 
 ### Step 7.6: Automation with CI/CD Pipelines
 
@@ -1393,7 +1330,6 @@ Now that your Debian system is fully functional with essential services, we can 
    ```
 4. Access Jenkins at `http://<your-ip>:8080`.
 
----
 
 ### Step 7.7: Secure Remote Access with Two-Factor Authentication (2FA)
 
@@ -1419,13 +1355,11 @@ Now that your Debian system is fully functional with essential services, we can 
    sudo systemctl restart ssh
    ```
 
----
 
 ### Step 8: Cloud Integration and Advanced Deployment
 
 This step focuses on integrating your Debian system with cloud platforms, setting up scalable architectures, and using advanced deployment tools for production-grade environments.
 
----
 
 ### Step 8.1: Cloud Integration with AWS
 
@@ -1473,7 +1407,6 @@ This step focuses on integrating your Debian system with cloud platforms, settin
    aws s3 sync /path/to/local/dir s3://my-secure-bucket/
    ```
 
----
 
 ### Step 8.2: Cloud Integration with Google Cloud Platform (GCP)
 
@@ -1506,7 +1439,6 @@ This step focuses on integrating your Debian system with cloud platforms, settin
    gcloud compute ssh my-instance --zone "us-central1-a"
    ```
 
----
 
 ### Step 8.3: Cloud Integration with Microsoft Azure
 
@@ -1534,7 +1466,6 @@ This step focuses on integrating your Debian system with cloud platforms, settin
    ssh azureuser@<public-ip>
    ```
 
----
 
 ### Step 8.4: Kubernetes for Orchestration
 
@@ -1568,7 +1499,6 @@ This step focuses on integrating your Debian system with cloud platforms, settin
    minikube service hello-minikube
    ```
 
----
 
 ### Step 8.5: Advanced CI/CD Pipelines
 
@@ -1604,7 +1534,6 @@ This step focuses on integrating your Debian system with cloud platforms, settin
        - echo "Deploying to production"
    ```
 
----
 
 ### Step 8.6: Cloud Automation with Terraform
 
@@ -1642,13 +1571,11 @@ This step focuses on integrating your Debian system with cloud platforms, settin
    terraform apply
    ```
 
----
 
 ### Step 9: Specialized Workloads and High-Performance Configurations
 
 This step focuses on advanced configurations for specific use cases, including high-performance computing, AI/ML workloads, big data, and IoT setups.
 
----
 
 ### Step 9.1: High-Performance Computing (HPC) Configuration
 
@@ -1685,7 +1612,6 @@ This step focuses on advanced configurations for specific use cases, including h
    sudo systemctl enable slurmctld
    ```
 
----
 
 ### Step 9.2: AI and Machine Learning Workloads
 
@@ -1728,7 +1654,6 @@ This step focuses on advanced configurations for specific use cases, including h
    ```
 3. Access Jupyter in your browser at `http://<your-ip>:8888`.
 
----
 
 ### Step 9.3: Big Data Workloads
 
@@ -1762,7 +1687,6 @@ This step focuses on advanced configurations for specific use cases, including h
    start-yarn.sh
    ```
 
----
 
 ### Step 9.4: IoT Setup with MQTT
 
@@ -1801,7 +1725,6 @@ This step focuses on advanced configurations for specific use cases, including h
    ```
 4. Access the interface at `http://<your-ip>:1880`.
 
----
 
 ### Step 9.5: VPN Gateway for IoT Devices
 
@@ -1831,7 +1754,6 @@ This step focuses on advanced configurations for specific use cases, including h
    sudo systemctl enable wg-quick@wg0
    ```
 
----
 
 ### Step 9.6: Configure Secure Remote Desktop
 
@@ -1847,13 +1769,11 @@ This step focuses on advanced configurations for specific use cases, including h
    ```
 3. Connect using an RDP client (e.g., Microsoft Remote Desktop).
 
----
 
 ### Step 10: Distributed Systems, Edge Computing, and Final Optimization
 
 This final step focuses on advanced distributed system setups, edge computing deployments, and system optimization techniques to prepare your Debian installation for high-demand, enterprise-level scenarios.
 
----
 
 ### Step 10.1: Distributed Systems with Apache Kafka
 
@@ -1892,7 +1812,6 @@ This final step focuses on advanced distributed system setups, edge computing de
    /opt/kafka/bin/kafka-console-consumer.sh --topic test-topic --from-beginning --bootstrap-server localhost:9092
    ```
 
----
 
 ### Step 10.2: Edge Computing with Kubernetes (K3s)
 
@@ -1925,7 +1844,6 @@ This final step focuses on advanced distributed system setups, edge computing de
    kubectl get nodes
    ```
 
----
 
 ### Step 10.3: Distributed Storage with Ceph
 
@@ -1963,7 +1881,6 @@ This final step focuses on advanced distributed system setups, edge computing de
    rados put myobject test-pool /path/to/test-file
    ```
 
----
 
 ### Step 10.4: Load Balancing with Consul and HAProxy
 
@@ -1987,7 +1904,6 @@ This final step focuses on advanced distributed system setups, edge computing de
        server-template srv 1-5 _my-app._tcp.service.consul resolvers consul resolve-prefer ipv4 check
    ```
 
----
 
 ### Step 10.5: Advanced System Optimizations
 
@@ -2026,7 +1942,6 @@ This final step focuses on advanced distributed system setups, edge computing de
    sudo cpufreq-set -g performance
    ```
 
----
 
 ### Step 10.6: Final Security Audits
 
@@ -2050,7 +1965,6 @@ This final step focuses on advanced distributed system setups, edge computing de
    oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_pci-dss /usr/share/xml/scap/ssg/content/ssg-debian11-ds.xml
    ```
 
----
 
 ### Step 10.7: Final Backup and Snapshot
 
@@ -2070,5 +1984,3 @@ This final step focuses on advanced distributed system setups, edge computing de
    ```plaintext
    0 2 * * * /usr/bin/timeshift --create --tags D
    ```
-
----
