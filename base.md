@@ -95,7 +95,7 @@ Debian provides official ISO images on its website.
 
 ### Prerequisites:
 - A USB stick with at least 8 GB of space.
-- Tools: **Rufus (Windows)** or **Etcher/Balena (Linux/Mac)**.
+- Tools: **Rufus (Windows)** or **Etcher/[Balena](https://etcher.balena.io/) (Linux/Mac)**.
 
 ### Steps:
 1. Back up any data on the USB drive.
